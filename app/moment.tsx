@@ -1,5 +1,6 @@
 import { fetchUnifiedMarkets, MarketEvent } from '@/services/marketData';
 import { useBeliefStore } from '@/stores/beliefStore';
+import { useUserStore } from '@/stores/userStore';
 import Animated, { FadeIn, SlideInRight } from 'react-native-reanimated';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,10 +11,24 @@ import { useEffect, useState } from 'react';
 
 const { width } = Dimensions.get('window');
 
+const getEventProbability = (event: MarketEvent): number => {
+    try {
+        if (!event.markets || event.markets.length === 0) return 0.5;
+        // Mock data has outcomePrices as a JSON string inside the object, treating it loosely here
+        const prices = JSON.parse(event.markets[0].outcomePrices as any);
+        return parseFloat(prices[0]) || 0.5;
+    } catch (e) {
+        return 0.5;
+    }
+};
+
 export default function MomentScreen() {
     const router = useRouter();
     const params = useLocalSearchParams();
     const categoryFilter = params.category as string | undefined;
+
+    // Get User Preferences
+    const { experience, focusAreas } = useUserStore();
 
     const [currentEvent, setCurrentEvent] = useState<MarketEvent | null>(null);
     const [loading, setLoading] = useState(true);
@@ -21,7 +36,8 @@ export default function MomentScreen() {
 
     const loadNextEvent = async () => {
         setLoading(true);
-        const data = await fetchUnifiedMarkets();
+        // Pass preferences to fetcher
+        const data = await fetchUnifiedMarkets(experience, focusAreas);
 
         // Filter by category if present
         let filteredData = data;
@@ -121,7 +137,7 @@ export default function MomentScreen() {
                     <View style={styles.statsGrid}>
                         <View style={styles.statItem}>
                             <Text style={styles.statLabel}>Consensus</Text>
-                            <Text style={styles.statValue}>{(currentEvent.probability * 100).toFixed(0)}%</Text>
+                            <Text style={styles.statValue}>{(getEventProbability(currentEvent) * 100).toFixed(0)}%</Text>
                         </View>
                         <View style={styles.statItem}>
                             <Text style={styles.statLabel}>Volume</Text>

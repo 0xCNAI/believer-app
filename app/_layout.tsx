@@ -59,7 +59,7 @@ export default function RootLayout() {
     if (!hasFinishedOnboarding) {
       return <Redirect href="/onboarding" />;
     } else {
-      return <Redirect href="/(tabs)" />;
+      return <Redirect href="/" />;
     }
   }
 
@@ -70,7 +70,7 @@ export default function RootLayout() {
 
   // 4. Authenticated & Onboarded -> prevent going back to Onboarding/Login manually
   if (isAuthenticated && hasFinishedOnboarding && (inOnboarding || inLogin)) {
-    return <Redirect href="/(tabs)" />;
+    return <Redirect href="/" />;
   }
 
   return (

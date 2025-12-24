@@ -272,11 +272,54 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     }
 ];
 
-export const fetchUnifiedMarkets = async (): Promise<MarketEvent[]> => {
-    // Return V1 static events
+import { ExperienceLevel, FocusArea } from '@/stores/userStore';
+
+export const fetchUnifiedMarkets = async (
+    experience?: ExperienceLevel | null,
+    focusAreas?: FocusArea[]
+): Promise<MarketEvent[]> => {
+    // Debug Log
+    console.log('[MarketData] Fetching with prefs:', { experience, focusAreas });
+
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve(BELIEVER_SIGNALS);
+            let events = [...BELIEVER_SIGNALS];
+
+            // 1. Filter/Sort by Experience (Mock Logic)
+            // If novice, maybe hide complex 'Supply' or 'Liquidity' complexity? 
+            // For now, we will just keep all but could prioritize simpler ones.
+
+            // 2. Weight by Focus Area
+            if (focusAreas && focusAreas.length > 0) {
+                events = events.sort((a, b) => {
+                    const aMatch = isMatch(a, focusAreas);
+                    const bMatch = isMatch(b, focusAreas);
+                    if (aMatch && !bMatch) return -1;
+                    if (!aMatch && bMatch) return 1;
+                    return 0;
+                });
+            }
+
+            resolve(events);
         }, 500);
     });
+};
+
+// Helper to map FocusArea to EventCategory/Slug
+const isMatch = (event: MarketEvent, focusAreas: FocusArea[]): boolean => {
+    // Map FocusArea to logic
+    // 'macro' -> Category: Macro, Liquidity
+    // 'extreme_repair' -> Category: Risk
+    // 'btc_structure' -> Category: Supply
+    // 'policy' -> Category: Political
+    // 'low_prob' -> Category: Narrative
+
+    const cat = event.category;
+    if (focusAreas.includes('macro') && (cat === 'Macro' || cat === 'Liquidity')) return true;
+    if (focusAreas.includes('extreme_repair') && cat === 'Risk') return true;
+    if (focusAreas.includes('btc_structure') && cat === 'Supply') return true;
+    if (focusAreas.includes('policy') && cat === 'Political') return true;
+    if (focusAreas.includes('low_prob') && cat === 'Narrative') return true;
+
+    return false;
 };

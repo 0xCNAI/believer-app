@@ -9,7 +9,7 @@ import { useAuthStore } from '@/stores/authStore';
 export default function SettingsScreen() {
     const router = useRouter();
     const { resetOnboarding } = useOnboardingStore();
-    const { resetProfile, riskPreference, experience } = useUserStore();
+    const { resetProfile, alertStyle, experience } = useUserStore();
     const { logout } = useAuthStore();
 
     const handleReset = async () => {
@@ -23,22 +23,37 @@ export default function SettingsScreen() {
         // Auth protection in _layout will redirect to /login
     };
 
+    // Helper to translate values
+    const getExpLabel = (val: string | null) => {
+        if (val === 'none') return '無交易經驗';
+        if (val === '1-3_years') return '1-3 年';
+        if (val === '5_plus_years') return '5 年以上';
+        return '未設定';
+    };
+
+    const getAlertLabel = (val: string | null) => {
+        if (val === 'early') return '較早感知';
+        if (val === 'balanced') return '平衡風格';
+        if (val === 'late') return '較晚提醒';
+        return '未設定';
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" />
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                <Text style={styles.headerTitle}>Settings</Text>
+                <Text style={styles.headerTitle}>設定 (SETTINGS)</Text>
 
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Profile Summary</Text>
+                    <Text style={styles.sectionTitle}>帳戶摘要 (Profile)</Text>
                     <View style={styles.card}>
                         <View style={styles.row}>
-                            <Text style={styles.rowLabel}>Experience</Text>
-                            <Text style={styles.rowValue}>{experience}</Text>
+                            <Text style={styles.rowLabel}>交易經驗</Text>
+                            <Text style={styles.rowValue}>{getExpLabel(experience)}</Text>
                         </View>
                         <View style={styles.row}>
-                            <Text style={styles.rowLabel}>Style</Text>
-                            <Text style={styles.rowValue}>{riskPreference}</Text>
+                            <Text style={styles.rowLabel}>提醒風格</Text>
+                            <Text style={styles.rowValue}>{getAlertLabel(alertStyle)}</Text>
                         </View>
                     </View>
                 </View>
@@ -46,20 +61,20 @@ export default function SettingsScreen() {
                 <View style={styles.spacer} />
 
                 <View style={styles.actionsContainer}>
-                    <Text style={styles.actionTitle}>Account Actions</Text>
+                    <Text style={styles.actionTitle}>帳戶操作 (ACTIONS)</Text>
 
                     <TouchableOpacity
                         onPress={handleLogout}
                         style={styles.logoutButton}
                     >
-                        <Text style={styles.logoutText}>LOG OUT</Text>
+                        <Text style={styles.logoutText}>登出 (LOG OUT)</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         onPress={handleReset}
                         style={styles.resetButton}
                     >
-                        <Text style={styles.resetText}>RESET DEV DATA (ONBOARDING)</Text>
+                        <Text style={styles.resetText}>重置開發數據 (RESET ONBOARDING)</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

@@ -24,6 +24,7 @@ interface BeliefState {
     incrementFaith: () => void;
     updateBeliefs: (freshEvents: MarketEvent[]) => void;
     setBtcPrice: (price: number) => void;
+    seedFromFocusAreas: (focusAreas: string[]) => void;
 
     // Getters
     hasInteracted: (id: string) => boolean;
@@ -57,6 +58,45 @@ export const useBeliefStore = create<BeliefState>()(
 
             incrementFaith: () => set((state) => ({ faithClicks: state.faithClicks + 1 })),
             setBtcPrice: (price) => set({ btcPrice: price }),
+
+            seedFromFocusAreas: (focusAreas) => {
+                const state = get();
+                const existingIds = new Set(state.beliefs.map(b => b.id));
+                const newBeliefs: Belief[] = [];
+
+                // Simple Strategy: Pick 1 top event for each focus area
+                focusAreas.forEach(area => {
+                    let targetCategory = '';
+                    if (area === 'macro') targetCategory = 'Macro'; // Or Liquidity
+                    if (area === 'extreme_repair') targetCategory = 'Risk';
+                    if (area === 'btc_structure') targetCategory = 'Supply';
+                    if (area === 'policy') targetCategory = 'Political';
+                    if (area === 'low_prob') targetCategory = 'Narrative';
+
+                    // Find first event in this category not already added
+                    const candidate = BELIEVER_SIGNALS.find(e =>
+                        e.category === targetCategory && !existingIds.has(e.id)
+                    );
+
+                    if (candidate && candidate.markets?.[0]) {
+                        const initialProb = parsePrice(candidate.markets[0].outcomePrices);
+                        newBeliefs.push({
+                            id: candidate.id,
+                            marketEvent: candidate,
+                            initialProbability: initialProb,
+                            currentProbability: initialProb,
+                            addedAt: Date.now(),
+                        });
+                        existingIds.add(candidate.id);
+                    }
+                });
+
+                if (newBeliefs.length > 0) {
+                    set((prev) => ({
+                        beliefs: [...prev.beliefs, ...newBeliefs]
+                    }));
+                }
+            },
 
             addBelief: (event) => {
                 const market = event.markets?.[0];
@@ -124,7 +164,7 @@ export const useBeliefStore = create<BeliefState>()(
 
                 const liqEvents = BELIEVER_SIGNALS.filter(e => e.category === 'Liquidity');
                 // Mock: Assume 1 Improving event exists
-                const liquidityStatus: 'tight' | 'neutral' | 'improving' = 'neutral';
+                const liquidityStatus: string = 'neutral';
                 const modifier = liquidityStatus === 'improving' ? 1.2 : (liquidityStatus === 'tight' ? 0.8 : 1.0);
 
                 const techComponent = (55 * 0.6) * modifier; // Base ~33, modified up/down
@@ -144,10 +184,32 @@ export const useBeliefStore = create<BeliefState>()(
 
             getInterpretation: () => {
                 const index = get().getReversalIndex();
-                // Avoid actionable language. Focus on "Perception"
-                if (index < 40) return "市場結構受壓制，流動性尚未鬆動。";
-                if (index < 60) return "多空力道均衡，等待流動性與結構共振。";
-                return "市場結構轉佳，流動性環境支持反轉。";
+                // Access user prefs directly from store (outside React hook)
+                const { experience } = require('./userStore').useUserStore.getState();
+
+                // Calibrated Interpretation based on Experience Level
+                // 1. Conservative (Novice/No Exp) - Focus on basic structure
+                if (experience === 'none' || !experience) {
+                    if (index < 40) return "觀察基礎結構：賣壓仍重，尚未築底。";
+                    if (index < 60) return "觀察基礎結構：處於修復期，靜待方向明確。";
+                    return "觀察基礎結構：底部型態確立，正向發展。";
+                }
+
+                // 2. Balanced (1-3 Years) - Focus on momentum
+                if (experience === '1-3_years') {
+                    if (index < 40) return "觀察中期動能：趨勢向下，等待止跌訊號。";
+                    if (index < 60) return "觀察中期動能：動能中性，留意關鍵點位突破。";
+                    return "觀察中期動能：多頭動能增強，趨勢延續中。";
+                }
+
+                // 3. Sensitive (5+ Years) - Focus on multi-frame/details
+                if (experience === '5_plus_years') {
+                    if (index < 40) return "微觀結構掃描：流動性緊縮，尋找極端錯價。";
+                    if (index < 60) return "微觀結構掃描：多空博弈激烈，等待主力表態。";
+                    return "微觀結構掃描：結構性買盤進駐，Alpha 機會浮現。";
+                }
+
+                return "系統等待校準中...";
             },
 
             getStats: () => {
