@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView, RefreshControl, Image, StyleS
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useRouter } from 'expo-router';
+import * as Linking from 'expo-linking';
 import { useBeliefStore } from '@/stores/beliefStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
@@ -214,9 +215,26 @@ export default function DashboardScreen() {
           })}
         </View>
 
-        <Text style={styles.footerVersion}>
-          Believer System V1.5 · Perception Only
-        </Text>
+
+        <View style={styles.footer}>
+          <View style={styles.socialRow}>
+            <TouchableOpacity onPress={() => Linking.openURL('https://twitter.com/betalphapick')} style={styles.socialBtn}>
+              <Ionicons name="logo-twitter" size={20} color="#71717a" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Linking.openURL('https://betalphapick.com')} style={styles.socialBtn}>
+              <Ionicons name="globe-outline" size={20} color="#71717a" />
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity onPress={() => Linking.openURL('https://betalphapick.com/export')} style={styles.exportBtn}>
+            <Text style={styles.exportText}>Export to BetAlphaPick</Text>
+            <Ionicons name="arrow-forward" size={12} color="#52525b" />
+          </TouchableOpacity>
+
+          <Text style={styles.footerVersion}>
+            Believer System V1.5 · Perception Only
+          </Text>
+        </View>
 
       </ScrollView>
 
@@ -599,10 +617,46 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textTransform: 'uppercase',
   },
+
+  // Footer
+  footer: {
+    marginTop: 48,
+    alignItems: 'center',
+    gap: 16,
+  },
+  socialRow: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  socialBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#18181B',
+    borderWidth: 1,
+    borderColor: '#27272A',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  exportBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    backgroundColor: '#18181B',
+    borderWidth: 1,
+    borderColor: '#27272A',
+  },
+  exportText: {
+    color: '#71717A',
+    fontSize: 12,
+    fontWeight: '600',
+  },
   footerVersion: {
     color: '#3F3F46', // zinc-700
     textAlign: 'center',
-    marginTop: 48,
     fontSize: 10,
     fontWeight: '700',
     textTransform: 'uppercase',
