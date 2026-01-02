@@ -90,7 +90,7 @@ export default function DashboardScreen() {
             </View>
             <View style={[styles.statusBadge, reversalIndex > 50 ? styles.statusBadgeActive : styles.statusBadgeNeutral]}>
               <Text style={[styles.statusText, reversalIndex > 50 ? styles.textOrange : styles.textZinc]}>
-                {reversalIndex > 50 ? '活躍 (Active)' : '中性 (Neutral)'}
+                {reversalIndex > 50 ? '活躍' : '中性'}
               </Text>
             </View>
           </View>
@@ -125,7 +125,7 @@ export default function DashboardScreen() {
 
           {/* Neutral Interpretation */}
           <View style={styles.interpretationBox}>
-            <Text style={styles.interpretationLabel}>趨勢感知 (Perception)</Text>
+            <Text style={styles.interpretationLabel}>趨勢感知</Text>
             <Text style={styles.interpretationText}>
               {interpretation}
             </Text>
@@ -134,7 +134,7 @@ export default function DashboardScreen() {
 
         {/* Categories List */}
         <View>
-          <Text style={styles.sectionTitle}>信號分類 (Signal Categories)</Text>
+          <Text style={styles.sectionTitle}>信號分類</Text>
 
           {/* Technical Special Category */}
           <TouchableOpacity
@@ -146,7 +146,7 @@ export default function DashboardScreen() {
                 <Ionicons name="analytics" size={14} color="#3b82f6" />
               </View>
               <View>
-                <Text style={styles.categoryTitle}>技術趨勢 (Technical)</Text>
+                <Text style={styles.categoryTitle}>技術趨勢</Text>
                 <Text style={styles.categorySubtitle}>BTC 價格結構與動能監測</Text>
               </View>
             </View>
@@ -158,6 +158,16 @@ export default function DashboardScreen() {
             const catBeliefs = beliefs.filter(b => b.marketEvent.category === cat);
             const isExpanded = expandedCat === cat;
 
+            // Category Name Translation
+            const catNameMap: Record<string, string> = {
+              'Macro': '宏觀趨勢',
+              'Liquidity': '流動性',
+              'Risk': '市場風險',
+              'Supply': '籌碼結構',
+              'Political': '政治與監管',
+              'Narrative': '敘事轉向'
+            };
+
             return (
               <View key={cat} style={styles.accordionContainer}>
                 <TouchableOpacity
@@ -168,10 +178,10 @@ export default function DashboardScreen() {
                   <View style={styles.accordionLeft}>
                     {/* Visual Dot */}
                     <View style={[styles.dot, catBeliefs.length > 0 ? styles.dotActive : styles.dotInactive]} />
-                    <Text style={styles.accordionTitle}>{cat}</Text>
+                    <Text style={styles.accordionTitle}>{catNameMap[cat] || cat}</Text>
                   </View>
                   <View style={styles.accordionRight}>
-                    <Text style={styles.accordionCount}>{catBeliefs.length} 活躍 (Active)</Text>
+                    <Text style={styles.accordionCount}>{catBeliefs.length} 活躍</Text>
                     <Ionicons name={isExpanded ? "chevron-up" : "chevron-down"} size={16} color="#52525b" />
                   </View>
                 </TouchableOpacity>
@@ -195,7 +205,7 @@ export default function DashboardScreen() {
                       style={styles.addSignalBtn}
                     >
                       <Ionicons name="add" size={16} color="#a1a1aa" />
-                      <Text style={styles.addSignalText}>新增 {cat} 信號</Text>
+                      <Text style={styles.addSignalText}>新增 {catNameMap[cat] || cat} 信號</Text>
                     </TouchableOpacity>
                   </View>
                 )}
@@ -205,7 +215,7 @@ export default function DashboardScreen() {
         </View>
 
         <Text style={styles.footerVersion}>
-          Believer System V1.4 · Perception Only
+          Believer System V1.5 · Perception Only
         </Text>
 
       </ScrollView>

@@ -42,10 +42,10 @@ export default function SettingsScreen() {
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" />
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                <Text style={styles.headerTitle}>設定 (SETTINGS)</Text>
+                <Text style={styles.headerTitle}>設定</Text>
 
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>帳戶摘要 (Profile)</Text>
+                    <Text style={styles.sectionTitle}>帳戶摘要</Text>
                     <View style={styles.card}>
                         <View style={styles.row}>
                             <Text style={styles.rowLabel}>交易經驗</Text>
@@ -61,20 +61,20 @@ export default function SettingsScreen() {
                 <View style={styles.spacer} />
 
                 <View style={styles.actionsContainer}>
-                    <Text style={styles.actionTitle}>帳戶操作 (ACTIONS)</Text>
+                    <Text style={styles.actionTitle}>帳戶操作</Text>
 
                     <TouchableOpacity
                         onPress={handleLogout}
                         style={styles.logoutButton}
                     >
-                        <Text style={styles.logoutText}>登出 (LOG OUT)</Text>
+                        <Text style={styles.logoutText}>登出</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         onPress={handleReset}
                         style={styles.resetButton}
                     >
-                        <Text style={styles.resetText}>重置開發數據 (RESET ONBOARDING)</Text>
+                        <Text style={styles.resetText}>重置開發數據</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

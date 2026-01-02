@@ -136,16 +136,16 @@ export default function MomentScreen() {
                     {/* Stats Grid */}
                     <View style={styles.statsGrid}>
                         <View style={styles.statItem}>
-                            <Text style={styles.statLabel}>Consensus</Text>
+                            <Text style={styles.statLabel}>市場共識</Text>
                             <Text style={styles.statValue}>{(getEventProbability(currentEvent) * 100).toFixed(0)}%</Text>
                         </View>
                         <View style={styles.statItem}>
-                            <Text style={styles.statLabel}>Volume</Text>
+                            <Text style={styles.statLabel}>總成交量</Text>
                             <Text style={styles.statValue}>$2.4M</Text>
                         </View>
                         <View style={styles.statItem}>
-                            <Text style={styles.statLabel}>Volatility</Text>
-                            <Text style={styles.statValue}>High</Text>
+                            <Text style={styles.statLabel}>波動程度</Text>
+                            <Text style={styles.statValue}>高</Text>
                         </View>
                     </View>
                 </Animated.View>

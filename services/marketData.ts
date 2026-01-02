@@ -7,7 +7,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     // --- ⓪ Liquidity Regime (The Amplifier) ---
     {
         id: 'liq_global_m2',
-        title: 'Global Liquidity (M2)',
+        title: '全球 M2 流動性',
         description: '全球資金是否停止緊縮並開始注入',
         source: 'Central Banks',
         category: 'Liquidity',
@@ -22,7 +22,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     },
     {
         id: 'liq_usd_pressure',
-        title: 'USD Pressure (DXY)',
+        title: '美元指數 (DXY) 壓力',
         description: '美元是否不再強勢吸血',
         source: 'DXY Index',
         category: 'Liquidity',
@@ -37,7 +37,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     },
     {
         id: 'liq_real_rates',
-        title: 'Real Rates Stress',
+        title: '實質利率壓力',
         description: '實質資金成本是否下降',
         source: 'Bond Market',
         category: 'Liquidity',
@@ -54,7 +54,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     // --- ① Macro Policy ---
     {
         id: 'macro_rate_cut',
-        title: 'Rate Policy Expectations',
+        title: '利率政策預期',
         description: '降息預期是否鬆動或是提前',
         source: 'Polymarket/Fed',
         category: 'Macro',
@@ -69,7 +69,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     },
     {
         id: 'macro_inflation',
-        title: 'Inflation Trend (CPI/PCE)',
+        title: '通膨趨勢 (CPI/PCE)',
         description: '通膨下行趨勢是否確立',
         source: 'Official Data',
         category: 'Macro',
@@ -84,7 +84,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     },
     {
         id: 'macro_yield_curve',
-        title: 'Yield Curve Structure',
+        title: '殖利率曲線結構',
         description: '長短期利差與實質利率壓力',
         source: 'Kalshi/Rates',
         category: 'Macro',
@@ -101,7 +101,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     // --- ② Market Risk Sentiment ---
     {
         id: 'risk_on_off',
-        title: 'Risk-On / Risk-Off',
+        title: '風險偏好 (Risk-On/Off)',
         description: '市場是否開始承受壞消息',
         source: 'Market Data',
         category: 'Risk',
@@ -116,7 +116,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     },
     {
         id: 'risk_volatility',
-        title: 'Volatility Compression',
+        title: '波動率壓縮',
         description: '波動率壓縮與方向選擇',
         source: 'Options IV',
         category: 'Risk',
@@ -131,7 +131,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     },
     {
         id: 'risk_btc_dom',
-        title: 'BTC Dominance',
+        title: '比特幣市佔率 (BTC.D)',
         description: '資金避險與吸血效應',
         source: 'Market Structure',
         category: 'Risk',
@@ -148,7 +148,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     // --- ③ Structural Supply/Demand (BTC Only) ---
     {
         id: 'supply_exchange_flow',
-        title: 'Exchange Netflow',
+        title: '交易所淨流量',
         description: '現貨供給壓力趨勢',
         source: 'On-Chain',
         category: 'Supply',
@@ -163,7 +163,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     },
     {
         id: 'supply_lth',
-        title: 'Long-Term Holder (LTH)',
+        title: '長期持有者 (LTH)',
         description: '長期持有者是否停止拋售',
         source: 'On-Chain',
         category: 'Supply',
@@ -178,7 +178,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     },
     {
         id: 'supply_sth',
-        title: 'STH Exhaustion',
+        title: '短期持有者 (STH) 拋壓',
         description: '短期持有者虧損賣壓釋放',
         source: 'On-Chain',
         category: 'Supply',
@@ -193,7 +193,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     },
     {
         id: 'supply_whale',
-        title: 'Whale Accumulation',
+        title: '巨鯨累積',
         description: '大額資金系統性吸收模式',
         source: 'On-Chain',
         category: 'Supply',
@@ -208,7 +208,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     },
     {
         id: 'supply_etf',
-        title: 'ETF Net Flows',
+        title: 'ETF 資金流向',
         description: '機構買盤連續性',
         source: 'ETF Data',
         category: 'Supply',
@@ -225,7 +225,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     // --- ④ Political & Regulatory ---
     {
         id: 'pol_election',
-        title: 'US Election / Politics',
+        title: '美國政治局勢',
         description: '政治立場對加密貨幣的轉向',
         source: 'Polymarket',
         category: 'Political',
@@ -240,7 +240,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     },
     {
         id: 'pol_regulation',
-        title: 'Regulatory Progress',
+        title: '監管進展',
         description: '法案與監管語氣放鬆',
         source: 'Polymarket',
         category: 'Political',
@@ -257,7 +257,7 @@ export const BELIEVER_SIGNALS: MarketEvent[] = [
     // --- ⑤ Narrative Shift ---
     {
         id: 'narrative_shift',
-        title: 'Low Probability Events',
+        title: '低機率黑天鵝',
         description: '長期被忽視敘事的重新定價',
         source: 'Prediction Mkts',
         category: 'Narrative',
